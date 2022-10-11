@@ -1,0 +1,52 @@
+git操作实验
+1.建立本地仓库
+git init %当前目录下建立git仓库，主分支master
+2.本地文件上传：
+git add 文件名 %上传某一个文件到本地缓存库，必须先暂存才能提交
+git add . %提交所有已更改文件到暂存区
+git commit -m '操作日志和改变日志(方便回溯版本)' %文件提交到本地仓库
+git status %获取本地暂存区状态
+3.本地文件回溯
+git diff HEAD -- 文件名 %查看提交的文件改变差异，+++表示上一个文件，---表示下一个文件
+git reset HEAD %把暂存区的文件取消暂存
+git log %显示当前版本与原始版本之间的提交日志
+git log -N --pretty=oneline %精简显示日志，每一行显示一次提交，共N行
+git reset --hard HEAD~N %回溯到当前版本的前N个版本
+git reset --hard 版本唯一标识符 %穿越到标识符代表的版本
+git clear %清空命令行页面
+git reflog %查看版本回溯后丢失的日志
+4.本地文件删除
+工作区点击删除后不影响本地仓库的文件，前提是暂存了
+git checkout -- 文件名 %从本地仓库恢复工作区误删除的文件
+git rm 文件名 %从本地仓库和工作区一起删除文件(rm=remove)
+git ls-file %查看本地仓库的文件列表(ls=list)
+5.远程仓库
+git clone 仓库链接 %克隆远程仓库到当前文件夹
+%推送一个新本地仓库到个人新仓库
+git init
+git add README.md
+git commit -m "frist commit"
+git remote add 仓库别名 仓库地址 %git remote add origin 仓库地址
+git push -u 仓库别名 master %git push -u origin master
+%推送一个现有本地仓库到个人远程仓库
+git remote add 仓库别名 仓库地址 %git remote add origin 仓库地址
+git push -u 仓库别名 master %git push -u origin master
+%SSH上传和HTTPS上传区别在于SSH是加密的，更安全
+%SSH上传-获取SSH公钥密钥-与账户绑定
+ssh-keygen -t rsa -C "邮箱地址" %获取SSH公钥密钥
+ssh -T git@github.com %查看是否SSH绑定成功
+%克隆下来的远程库上传只需要推送到本地仓库然后
+git push -u 仓库别名 master
+6.GIT分支操作
+git checkout 分支名 %切换到指定分支
+git checkout -b 新的分支名 %建立分支并切换到指定分支
+git branch -d 分支名 %删除指定分支
+git branch %查看分支
+git merge branch %合并分支到
+git branch -m|-M 旧的的分支名 新的分支名 %如果新的分支名已存在，-M强制重命名
+%主干上有什么东西，创建分支时就有什么东西
+%分支远程操作
+git branch -a %查看本地和远程所有分支
+git push origin 分支名 %推送本地分支到远程仓库
+git push origin :远程分支名 %删除远程分支
+git checkout -b 本地分支名 origin/远程分支名 %拉取远程分支并创建本地分支
