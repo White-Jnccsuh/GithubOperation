@@ -17,9 +17,26 @@ git reset HEAD %把暂存区的文件取消暂存
 git log %显示当前版本与原始版本之间的提交日志
 git log -N --pretty=oneline %精简显示日志，每一行显示一次提交，共N行
 git reset --hard HEAD~N %回溯到当前版本的前N个版本
+版本回溯会带着提交的所有文件回溯
 git reset --hard 版本唯一标识符 %穿越到标识符代表的版本
 git clear %清空命令行页面
 git reflog %查看版本回溯后丢失的日志
+
+在 git 提交过程中，难免会遇到一种情况，修改已经提交了，但提交部分还提交了部分本不该改动的文件，这时候如果统一恢复到某个历史版本，会把修改一起恢复，所以我们可以仅恢复某一个或某几个文件到某个历史版本。
+# -- 后面为想要查看单个文件修改历史的文件路径
+git log -- src/a.js
+
+## 查出对应修改历史的 hash，并复制
+
+# 恢复某个文件，后面跟文件路径
+git checkout 刚才复制的hash src/a.js# 提交代码 git commit -m "xxx"
+
+1.git reset -mixed：此为默认方式，不带任何参数的git reset，这种方式，它回退到某个版本，只保留源码，回退commit和index信息
+2.git reset -soft:回退到某个版本，只回退了commit的信息，不会恢复到index file一级。如果还要提交，直接commit即可
+3.git reset -hard 彻底回退到某个版本，本地的源码也会变成为上一个版本的内容
+
+回溯之前一定要先提交
+
 4.本地文件删除
 工作区点击删除后不影响本地仓库的文件，前提是暂存了
 git checkout -- 文件名 %从本地仓库恢复工作区误删除的文件
@@ -27,6 +44,7 @@ git rm 文件名 %从本地仓库和工作区一起删除文件(rm=remove)
 git ls-file %查看本地仓库的文件列表(ls=list)
 5.远程仓库
 git clone 仓库链接 %克隆远程仓库到当前文件夹
+直接克隆仓库，不需要初始化
 %推送一个新本地仓库到个人新仓库
 git init
 git add README.md
@@ -44,7 +62,7 @@ ssh -T git@github.com %查看是否SSH绑定成功
 git push -u 仓库别名 master
 6.GIT分支操作
 git checkout 分支名 %切换到指定分支
-git checkout -b 新的分支名 %建立分支并切换到指定分支
+git checkout -b 新的分支名 %从当前分支复制建立分支并切换到指定分支
 git branch -d 分支名 %删除指定分支
 git branch %查看分支
 git merge branch %合并分支到
@@ -54,4 +72,8 @@ git branch -m|-M 旧的的分支名 新的分支名 %如果新的分支名已存
 git branch -a %查看本地和远程所有分支
 git push origin 分支名 %推送本地分支到远程仓库
 git push origin :远程分支名 %删除远程分支
+7.目录操作
+cd 文件目录 %打开该文件目录
+cd .. %返回上一级目录
 git checkout -b 本地分支名 origin/远程分支名 %拉取远程分支并创建本地分支
+git pull %拉取最新代码
